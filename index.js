@@ -17,7 +17,14 @@ async function run() {
 
     try{
         await client.connect();
-        console.log('connected database');
+       const partsCollection = client.db('skylink-computers').collection('parts');
+
+       app.get('/part', async(req, res) => {
+           const query = {};
+           const cursor = partsCollection.find(query);
+           const parts = await cursor.toArray();
+           res.send(parts);
+       })
     }
     finally{
 
