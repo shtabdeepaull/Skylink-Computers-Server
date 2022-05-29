@@ -18,6 +18,7 @@ async function run() {
     try{
         await client.connect();
        const partsCollection = client.db('skylink-computers').collection('parts');
+       const orderCollection = client.db('skylink-computers').collection('orders');
        const userCollection = client.db('skylink-computers').collection('users');
 
        app.get('/part', async(req, res) => {
@@ -32,11 +33,18 @@ async function run() {
            const query = {_id: ObjectId(id)};
            const part = await partsCollection.findOne(query);
            res.send(part);
+       });
+
+       app.post('/order', async (req, res) => {
+         const order = req.body;
+         const result = await orderCollection.insertOne(order);
+         res.send(result);
        })
 
        app.put('/user/:email', async(req, res) => {
 
        });
+
     }
     finally{
 
