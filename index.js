@@ -39,10 +39,19 @@ async function run() {
          const order = req.body;
          const result = await orderCollection.insertOne(order);
          res.send(result);
+       });
+
+       app.get('/order', async (req, res) => {
+         const email = req.query.email;
+         const query = {email: email};
+         const orders = await orderCollection.find(query).toArray();
+         res.send(orders);
        })
 
        app.put('/user/:email', async(req, res) => {
-
+        const email = req.params.email;
+        const filter = {email: email};
+        
        });
 
     }
