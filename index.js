@@ -71,7 +71,23 @@ async function run() {
       else{
         return res.status(403).send({message: 'Forbidden Access'});
       }
+    });
+
+    app.get('/user', async (req, res) => {
+      const users =  await userCollection.find().toArray();
+      res.send(users);
     })
+
+    // app.put('/user/admin/:email', async (req, res) => {
+    //   const email = req.params.email;
+    //   const filter = { email: email };
+    //   const updateDoc = {
+    //     $set: {role: 'admin'},
+    //   };
+    //   const result = await userCollection.updateOne(filter, updateDoc);
+    //   res.send(result);
+    // });
+
 
     app.put('/user/:email', async (req, res) => {
       const email = req.params.email;
@@ -84,7 +100,7 @@ async function run() {
       const result = await userCollection.updateOne(filter, updateDoc, options);
       const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
       res.send({ result, token });
-    })
+    });
 
   }
   finally {
